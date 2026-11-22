@@ -31,6 +31,6 @@ To add a project, duplicate a `.project-card` article and set `data-category` to
 
 For static hosting, publish this directory with the relative asset paths intact.
 
-Academic background is followed immediately by research, then professional experience. Languages have a dedicated section. Project cards show the first four matching projects, with an accessible See more / See less control for the rest. Changing filters resets the list to four. The requested project order is preserved.
+About follows the hero, followed by academic background, research, and professional experience. Languages have a dedicated section. Project cards show the first four matching projects, with an accessible See more / See less control for the rest. Changing filters resets the list to four. The requested project order is preserved.
 
 The color system uses a continuous navy canvas (#101E2B), dark raised surfaces, mint accents, and consistent light text across every section.
