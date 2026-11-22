@@ -277,3 +277,71 @@ function setupDocumentViewer() {
 }
 
 setupDocumentViewer();
+
+// Copy only the requested public contact value; never read the clipboard.
+function setupContactCopy() {
+  const buttons = document.querySelectorAll("[data-copy-value]");
+  const status = document.getElementById("copy-status");
+  let resetTimer;
+
+  function copyWithSelection(value) {
+    const previousFocus = document.activeElement;
+    const field = document.createElement("textarea");
+    field.value = value;
+    field.readOnly = true;
+    field.style.cssText = "position:fixed;top:0;left:0;opacity:0;font-size:16px;pointer-events:none;";
+    document.body.append(field);
+    field.select();
+    field.setSelectionRange(0, value.length);
+    try {
+      if (!document.execCommand("copy")) throw new Error("Copy unavailable");
+    } finally {
+      field.remove();
+      previousFocus?.focus({ preventScroll: true });
+    }
+  }
+
+  function resetButtons() {
+    buttons.forEach((button) => {
+      button.classList.remove("is-copied");
+      button.setAttribute("aria-label", `Copy ${button.dataset.copyLabel}`);
+      button.title = `Copy ${button.dataset.copyLabel}`;
+    });
+  }
+
+  buttons.forEach((button) => {
+    button.hidden = false;
+    button.addEventListener("click", async () => {
+      if (button.getAttribute("aria-busy") === "true") return;
+      const value = button.dataset.copyValue;
+      const label = button.dataset.copyLabel;
+      window.clearTimeout(resetTimer);
+      resetButtons();
+      status.textContent = "";
+      button.setAttribute("aria-busy", "true");
+      try {
+        try {
+          if (!navigator.clipboard?.writeText) throw new Error("Use selection fallback");
+          await navigator.clipboard.writeText(value);
+        } catch {
+          copyWithSelection(value);
+        }
+        resetButtons();
+        button.classList.add("is-copied");
+        button.setAttribute("aria-label", `${label} copied`);
+        button.title = "Copied!";
+        status.textContent = `${label === "email address" ? "Email address" : "Phone number"} copied.`;
+        resetTimer = window.setTimeout(() => {
+          resetButtons();
+          status.textContent = "";
+        }, 2500);
+      } catch {
+        status.textContent = `Could not copy. Select and copy the ${label} manually.`;
+      } finally {
+        button.removeAttribute("aria-busy");
+      }
+    });
+  });
+}
+
+setupContactCopy();

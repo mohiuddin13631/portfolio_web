@@ -12,7 +12,7 @@ Open `index.html` in a browser, or serve this directory with any static developm
 - Featured IEEE computer vision publication with reported results and research context.
 - Eleven projects: all six original projects, two applied ML projects, and three additional published applications from the academic CV.
 - Project filters, skills, professional experience, education, expandable coursework, leadership, and languages.
-- Contact links open the visitor's email app with a relevant subject. There is no backend, message storage, or simulated form submission.
+- Primary email links open Gmail compose in a new tab with the recipient and subject prefilled. An alternative mailto link supports other email apps. Visitors review and send their own drafts; there is no backend or automatic sending.
 
 The supplied academic CV is the source for updated qualifications and additions. The bachelor's CGPA is 3.82/4.00 and diploma CGPA is 3.53/4.00. NLP metrics explicitly refer to a synthetic held-out test set; ongoing research results are marked pending. The developer resume is the latest supplied `resume.pdf`, stored separately from the academic CV.
 
