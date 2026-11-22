@@ -345,3 +345,66 @@ function setupContactCopy() {
 }
 
 setupContactCopy();
+
+function setupCounters() {
+  const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
+  if (!("IntersectionObserver" in window) || motionPreference.matches) return;
+
+  const counters = Array.from(document.querySelectorAll("[data-count-to]")).map((element) => ({
+    element,
+    display: element.querySelector(".counter-value"),
+    value: Number(element.dataset.countTo),
+    decimals: Number(element.dataset.countDecimals || 0),
+    frame: null,
+    started: false,
+  })).filter((counter) => counter.display && Number.isFinite(counter.value));
+  const byElement = new Map(counters.map((counter) => [counter.element, counter]));
+  const duration = 1700;
+
+  function finish(counter) {
+    if (counter.frame !== null) window.cancelAnimationFrame(counter.frame);
+    counter.frame = null;
+    counter.started = true;
+    counter.display.textContent = counter.value.toFixed(counter.decimals);
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      const counter = byElement.get(entry.target);
+      if (!counter || counter.started || !entry.isIntersecting || entry.intersectionRatio < 0.4) return;
+      counter.started = true;
+      observer.unobserve(counter.element);
+      if (motionPreference.matches) {
+        finish(counter);
+        return;
+      }
+      let start;
+      function tick(timestamp) {
+        if (start === undefined) start = timestamp;
+        const progress = Math.min((timestamp - start) / duration, 1);
+        const eased = 1 - (1 - progress) ** 3;
+        counter.display.textContent = (counter.value * eased).toFixed(counter.decimals);
+        if (progress < 1) counter.frame = window.requestAnimationFrame(tick);
+        else finish(counter);
+      }
+      counter.frame = window.requestAnimationFrame(tick);
+    });
+  }, { threshold: 0.4 });
+
+  counters.forEach((counter) => {
+    counter.display.style.setProperty("--counter-width", `${counter.value.toFixed(counter.decimals).length}ch`);
+    counter.display.textContent = (0).toFixed(counter.decimals);
+    observer.observe(counter.element);
+  });
+
+  motionPreference.addEventListener("change", () => {
+    if (!motionPreference.matches) return;
+    observer.disconnect();
+    counters.forEach(finish);
+  });
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) counters.filter((counter) => counter.frame !== null).forEach(finish);
+  });
+}
+
+setupCounters();
