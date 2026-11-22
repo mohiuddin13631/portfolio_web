@@ -139,3 +139,94 @@ window.addEventListener(
 );
 updateActiveSection();
 document.getElementById("year").textContent = new Date().getFullYear();
+
+// Animate on entry without hiding content before the observer is ready.
+// Each item plays once; filtering or expanding projects keeps the same behavior.
+function setupScrollReveals() {
+  if (!("IntersectionObserver" in window) || typeof Element.prototype.animate !== "function") return;
+
+  const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const compactScreen = window.matchMedia("(max-width: 680px)");
+  const targets = Array.from(document.querySelectorAll([
+    ".section-heading",
+    ".about-grid > div",
+    ".education-card",
+    ".academic-coursework",
+    ".research-feature",
+    ".research-bottom > div",
+    ".experience-grid > div:first-child",
+    ".timeline-item",
+    ".recognition-grid > div",
+    ".project-toolbar",
+    ".project-card",
+    ".skill-item",
+    ".learning-note",
+    ".language-card",
+    ".contact-grid > div",
+  ].join(",")));
+  const revealed = new Set();
+  const running = new Map();
+  let observer;
+
+  function stopAnimations() {
+    observer?.disconnect();
+    running.forEach((animation) => animation.cancel());
+    running.clear();
+  }
+
+  function observeRemaining() {
+    stopAnimations();
+    if (motionPreference.matches) return;
+
+    observer = new IntersectionObserver((entries) => {
+      const siblingDelays = new Map();
+      entries.forEach((entry) => {
+        const target = entry.target;
+        if (!entry.isIntersecting || target.hidden || revealed.has(target)) return;
+        revealed.add(target);
+        observer.unobserve(target);
+
+        // Never animate content away from a keyboard user or after scrolling past it.
+        if (motionPreference.matches || target.contains(document.activeElement) || entry.boundingClientRect.top < 0) return;
+        const siblingIndex = siblingDelays.get(target.parentElement) || 0;
+        siblingDelays.set(target.parentElement, siblingIndex + 1);
+        const animation = target.animate([
+          { opacity: 0, transform: `translate3d(0, ${compactScreen.matches ? 12 : 20}px, 0)` },
+          { opacity: 1, transform: "translate3d(0, 0, 0)" },
+        ], {
+          duration: compactScreen.matches ? 800 : 1000,
+          delay: Math.min(siblingIndex * 90, 270),
+          easing: "cubic-bezier(0.22, 1, 0.36, 1)",
+          fill: "backwards",
+        });
+        running.set(target, animation);
+        animation.onfinish = animation.oncancel = () => running.delete(target);
+      });
+    }, { threshold: 0.08, rootMargin: "0px 0px -24px 0px" });
+
+    targets.forEach((target) => {
+      if (revealed.has(target)) return;
+      const rect = target.getBoundingClientRect();
+      // Leave content already on screen untouched, including restored scroll positions.
+      if (!target.hidden && rect.height > 0 && rect.top < window.innerHeight && rect.bottom > 0) {
+        revealed.add(target);
+      } else {
+        observer.observe(target);
+      }
+    });
+  }
+
+  document.addEventListener("focusin", (event) => {
+    targets.forEach((target) => {
+      if (!target.contains(event.target)) return;
+      revealed.add(target);
+      observer?.unobserve(target);
+      running.get(target)?.cancel();
+      running.delete(target);
+    });
+  });
+  motionPreference.addEventListener("change", observeRemaining);
+  observeRemaining();
+}
+
+setupScrollReveals();
