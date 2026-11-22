@@ -14,7 +14,7 @@ Open `index.html` in a browser, or serve this directory with any static developm
 - Project filters, skills, professional experience, education, expandable coursework, leadership, and languages.
 - Contact links open the visitor's email app with a relevant subject. There is no backend, message storage, or simulated form submission.
 
-The supplied academic CV is the source for updated qualifications and additions. The bachelor's CGPA is 3.82/4.00 and diploma CGPA is 3.53/4.00. NLP metrics explicitly refer to a synthetic held-out test set; ongoing research results are marked pending. The original developer résumé PDF is retained separately.
+The supplied academic CV is the source for updated qualifications and additions. The bachelor's CGPA is 3.82/4.00 and diploma CGPA is 3.53/4.00. NLP metrics explicitly refer to a synthetic held-out test set; ongoing research results are marked pending. The developer resume is the latest supplied `resume.pdf`, stored separately from the academic CV.
 
 ## Files
 
@@ -22,7 +22,7 @@ The supplied academic CV is the source for updated qualifications and additions.
 - `css/styles.css`: navy, mint, and white design; responsive and reduced-motion styles.
 - `js/main.js`: project filtering, mobile navigation, active-section tracking, and footer year.
 - `assets/Mohiuddin-Khan-Academic-CV.pdf`: supplied academic CV.
-- `assets/Mohiuddin-Khan-Resume.pdf`: existing developer résumé.
+- `assets/Mohiuddin-Khan-Resume.pdf`: developer resume, replaced with the supplied `resume.pdf`.
 - `assets/images/profile-navy.png`: portrait with a navy background, used in the hero.
 - `assets/images/profile-latest.png`: preserved original portrait.
 - `assets/images/portrait-edit-prompt.txt`: image-edit prompt and target background color.

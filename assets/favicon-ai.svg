@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <title>AI and software engineering</title>
+  <rect width="64" height="64" rx="16" fill="#101e2b"/>
+  <g fill="none" stroke="#a9e8d0" stroke-width="3" stroke-linecap="round" opacity=".65">
+    <path d="M13 16 33 23 51 32 33 41 13 48M13 16 33 41M13 48 33 23"/>
+  </g>
+  <g fill="#a9e8d0">
+    <circle cx="13" cy="16" r="5"/>
+    <circle cx="13" cy="48" r="5"/>
+    <circle cx="33" cy="23" r="5"/>
+    <circle cx="33" cy="41" r="5"/>
+    <circle cx="51" cy="32" r="6"/>
+  </g>
+</svg>
