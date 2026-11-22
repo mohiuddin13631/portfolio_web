@@ -2130,8 +2130,8 @@ img {
   width: 40px;
   height: 40px;
   flex-shrink: 0;
-  border-radius: 6px;
-  background: var(--surface-accent);
+  border-radius: 50%;
+  background: transparent;
   color: var(--teal);
   font-size: 0.875rem;
   font-weight: 700;
@@ -2141,6 +2141,12 @@ img {
   font-weight: 700;
   line-height: 1.4;
   margin-top: 3px;
+}
+.language-code img {
+  width: 32px;
+  height: 32px;
+  object-fit: cover;
+  border-radius: 50%;
 }
 .language-card dd {
   margin: 6px 0 0;
