@@ -230,3 +230,50 @@ function setupScrollReveals() {
 }
 
 setupScrollReveals();
+
+function setupDocumentViewer() {
+  const dialog = document.getElementById("document-viewer");
+  // Direct PDF links still work if the browser does not support modal dialogs.
+  if (!dialog || typeof dialog.showModal !== "function") return;
+
+  const frame = document.getElementById("document-frame");
+  const title = document.getElementById("document-viewer-title");
+  const download = document.getElementById("document-download");
+  const closeButton = document.getElementById("document-close");
+  let opener;
+
+  document.querySelectorAll("a[data-document-title]").forEach((link) => {
+    link.addEventListener("click", (event) => {
+      if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+      event.preventDefault();
+      opener = link;
+      const label = link.dataset.documentTitle;
+      const source = link.getAttribute("href");
+      title.textContent = label;
+      frame.title = `${label} PDF preview`;
+      download.setAttribute("href", source);
+      download.setAttribute("aria-label", `Download ${label} PDF`);
+      frame.src = `${source}#view=FitH`;
+      dialog.showModal();
+      document.body.classList.add("document-open");
+      closeButton.focus({ preventScroll: true });
+    });
+  });
+
+  closeButton.addEventListener("click", () => dialog.close());
+  dialog.addEventListener("click", (event) => {
+    if (event.target !== dialog) return;
+    const bounds = dialog.getBoundingClientRect();
+    const outside = event.clientX < bounds.left || event.clientX > bounds.right ||
+      event.clientY < bounds.top || event.clientY > bounds.bottom;
+    if (outside) dialog.close();
+  });
+  // The native dialog handles Escape and keeps keyboard focus inside the viewer.
+  dialog.addEventListener("close", () => {
+    frame.removeAttribute("src");
+    document.body.classList.remove("document-open");
+    if (opener?.isConnected) opener.focus({ preventScroll: true });
+  });
+}
+
+setupDocumentViewer();

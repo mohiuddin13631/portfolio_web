@@ -34,3 +34,5 @@ For static hosting, publish this directory with the relative asset paths intact.
 About follows the hero, followed by academic background, research, and professional experience. Languages have a dedicated section. Project cards show the first four matching projects, with an accessible See more / See less control for the rest. Changing filters resets the list to four. The requested project order is preserved.
 
 The color system uses a continuous navy canvas (#101E2B), dark raised surfaces, mint accents, and consistent light text across every section.
+
+Resume and academic CV links open a responsive in-page PDF dialog. The viewer includes Download PDF, Escape/backdrop/close-button dismissal, and focus restoration. PDF rendering uses the browser's built-in viewer; browsers without embedded PDF support can use the download link.
