@@ -23,10 +23,12 @@ The supplied academic CV is the source for updated qualifications and additions.
 - `js/main.js`: project filtering, mobile navigation, active-section tracking, and footer year.
 - `assets/Mohiuddin-Khan-Academic-CV.pdf`: supplied academic CV.
 - `assets/Mohiuddin-Khan-Resume.pdf`: existing developer résumé.
-- `assets/images/profile-latest.png`: updated portrait supplied for this revision.
+- `assets/images/profile-navy.png`: portrait with a navy background, used in the hero.
+- `assets/images/profile-latest.png`: preserved original portrait.
+- `assets/images/portrait-edit-prompt.txt`: image-edit prompt and target background color.
 
 To add a project, duplicate a `.project-card` article and set `data-category` to `ai` or `mobile`. JavaScript updates the filter totals automatically. Update initial static counts in the HTML as well. Every project is visible without JavaScript.
 
 For static hosting, publish this directory with the relative asset paths intact.
 
-Academic background is followed immediately by professional experience, then research. Languages have a dedicated section. Project cards show the first four matching projects, with an accessible See more / See less control for the rest. Changing filters resets the list to four. The requested project order is preserved.
+Academic background is followed immediately by research, then professional experience. Languages have a dedicated section. Project cards show the first four matching projects, with an accessible See more / See less control for the rest. Changing filters resets the list to four. The requested project order is preserved.

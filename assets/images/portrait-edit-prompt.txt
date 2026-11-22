@@ -1,0 +1,7 @@
+Tool: built-in image_gen (image edit)
+Source: profile-latest.png
+Output: profile-navy.png
+Hero background: #101E2B (RGB 16, 30, 43)
+
+Final prompt:
+Use case: identity-preserve. Edit target: the provided formal portrait photograph, for a portfolio website hero. Change ONLY the white background to a uniform solid dark navy #101E2B (RGB 16,30,43), exactly matching the website hero. Preserve the man's face, identity, expression, skin texture and tone, hair including fine edges, beard, body, suit, white shirt, tie, original lighting, pose, framing and portrait aspect ratio. Do not redraw, beautify, retouch, relight, change clothing, or change facial proportions. Clean realistic hair edges with no white halo. Do not recolor the white shirt. No added text, objects, gradients, effects, or watermarks. Output the edited portrait only.

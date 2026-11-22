@@ -105,8 +105,19 @@ renderProjects();
 // Track the reading position even within sections taller than the viewport.
 const navigationLinks = Array.from(document.querySelectorAll('.nav-link[href^="#"]'));
 const sections = Array.from(document.querySelectorAll("main > section[id]"));
+const backToTop = document.getElementById("back-to-top");
+backToTop.addEventListener("click", () => {
+  const heading = document.getElementById("hero-title");
+  heading.setAttribute("tabindex", "-1");
+  heading.focus({ preventScroll: true });
+  window.scrollTo({
+    top: 0,
+    behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth",
+  });
+});
 let framePending = false;
 function updateActiveSection() {
+  backToTop.hidden = window.scrollY < 400;
   const current = sections.filter((section) => section.getBoundingClientRect().top <= 150).at(-1);
   navigationLinks.forEach((link) => {
     const active = current && link.hash === `#${current.id}`;
